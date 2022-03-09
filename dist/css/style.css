@@ -1,0 +1,231 @@
+:root {
+    --header-bgcolor: black;
+    --color-basic: white;
+
+    --color-extra-rgb: 217, 163, 46;
+    --color-extra: rgba(var(--color-extra-rgb), 1);
+
+    --color-line-rgb: 170, 170, 170;
+    --color-line: rgba(var(--color-line-rgb), 1);
+}
+
+body {
+    margin: 0;
+    box-sizing: border-box;
+    user-select: none;
+    font-family: arial, helvetica, clean, sans-serif;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding: 0 1rem;
+    height: 4rem;
+    background-color: var(--header-bgcolor);
+    font-weight: 800;
+}
+
+.header-logo {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    color: var(--color-basic);
+    font-size: 2rem;
+}
+
+.header-logo span:nth-child(2) {
+    color: var(--color-extra);
+}
+
+header .button-movie-list {
+    flex-shrink: 0;
+    display: inline-block;
+    padding: .1em 1em;
+    border-radius: 35px;
+    border: .2em solid var(--color-line);
+}
+
+header .button-movie-list,
+.movies li:hover {
+    position: relative;
+
+    border-color: var(--color-line);
+
+    background: var(--color-basic) no-repeat;
+    background-image: linear-gradient(to left, var(--color-line), var(--color-line));
+    background-position: calc(100% - 2.7em) 0, calc(100% - 2.7em) 0, 0 0;
+    background-size: 0.1em 100%, 0.1em 100%, auto auto;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+header .button-movie-list:after,
+.movies li:hover:after {
+    content: "\1F440";
+}
+
+header .button-movie-list:after {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    bottom: 0.2em;
+    margin-left: 2.7em;
+}
+
+.movies li:hover:after {
+    display: block;
+    box-sizing: inherit;
+    position: absolute;
+    right: 1em;
+    bottom: calc(50% - 0.5em);
+}
+
+header .button-movie-list:hover,
+.movies li:hover:hover {
+    background-image:
+        linear-gradient(to left, var(--color-line), var(--color-line)),
+        linear-gradient(to left, var(--color-line), var(--color-line)),
+        linear-gradient(var(--color-basic), var(--color-extra));
+}
+
+header .button-movie-list:active:after,
+.movies li:hover:active:after {
+    transform: rotate(180deg);
+    bottom: calc(50% - 0.75em);
+}
+
+.content {
+    border: .1em solid var(--color-line);
+    padding: 1rem;
+    padding-top: 0;
+    padding-bottom: 2rem;
+    overflow: hidden;
+}
+
+.title {
+    display: block;
+    position: relative;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-style: italic;
+    letter-spacing: .5px;
+}
+
+.title:after {
+    content: "";
+    display: block;
+    width: 7.5em;
+    height: 0.2em;
+    margin-top: 0.5rem;
+    background: var(--color-extra);
+}
+
+.movie-list {
+    display: block;
+    border-top-width: 0;
+}
+
+.movies,
+.characters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+    grid-gap: 0;
+    padding-inline-start: 0;
+    font-size: 1.2em;
+}
+
+.characters .heroes-description .movies {
+    margin-top: 0;
+    font-size: 1em;
+}
+
+.movies li {
+    display: inline-block;
+    border: .2em solid var(--color-basic);
+    border-radius: 35px;
+    padding: .1em 2.7em .1em 1em;
+    cursor: pointer;
+}
+
+.movies li.active {
+    background-color: rgba(var(--color-line-rgb), 0.5);
+}
+
+.movies li.all,
+.letter-begin:first-letter,
+.title-movie {
+    color: var(--color-extra);
+    font-weight: 800;
+    text-shadow: 0 0.05em 0.1em var(--header-bgcolor);
+}
+
+.characters {
+    row-gap: 2em;
+    column-gap: 3.5em;
+}
+
+.heroes {
+    display: block;
+    position: relative;
+
+    overflow: hidden;
+    min-width: 15em;
+}
+
+.heroes .name {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    text-align: center;
+}
+
+.heroes .real-name {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    height: 1.4em;
+    box-sizing: border-box;
+    white-space: nowrap;
+    font-size: 0.8em;
+}
+
+.heroes .image {
+    display: block;
+    margin: 0 auto;
+    height: 27em;
+}
+
+.heroes-description {
+    font-size: .8em;
+}
+
+.heroes-description .property {
+    display: inline-block;
+    text-align: right;
+    width: 50%;
+    font-weight: 600;
+}
+
+.heroes-movies {
+    display: inline-block;
+    margin-top: 0.2em;
+    font-size: .8em;
+    text-align: left;
+    width: 100%;
+    font-weight: 600;
+    border-bottom: .1em solid var(--color-line);
+}
+
+.heroes-description .value {
+    display: inline-block;
+    padding-left: .1em;
+}
+
+.close {
+    display: none;
+}
