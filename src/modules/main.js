@@ -53,7 +53,7 @@ const main = (pathData) => {
             ulList.append(liAll);
 
             // остальные пункты списка
-            movies.forEach((name) => {
+            movies.sort().forEach((name) => {
                 const liOther = document.createElement('li');
                 let letterFirst = name.slice(0, 1).toUpperCase();
 
@@ -90,8 +90,7 @@ const main = (pathData) => {
         });
         for (let name in moviesList) { movies.push(name); }
         if (movies.length) {
-            movies.sort();
-            // добавить на страницу
+            // добавить на страницу            
             addMovieList(movies);
         } else {
             // нет списка фильмов
@@ -128,7 +127,7 @@ const main = (pathData) => {
                   <span class="heroes-movies">movies with this character</span>
                   <div class="heroes-description">
                     <ul class="movies">`;
-                hero.movies.forEach((name) => {
+                hero.movies.sort().forEach((name) => {
                     htmlHero += `
                       <li class="movies">${name}</li>`;
                 });
