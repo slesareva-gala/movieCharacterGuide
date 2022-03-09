@@ -1,6 +1,6 @@
 "use strict";
 
-import { getData } from './helpers';
+import { getData, animate } from './helpers';
 
 const main = (pathData) => {
 
@@ -148,6 +148,67 @@ const main = (pathData) => {
         characters.innerHTML = htmlCharacters;
     };
 
+    // фильтрация карточек
+    const filtration = (nameMovie) => {
+
+        // переключатель выделения активности фильма
+        const toggleActive = (movie) => {
+            if (movie.textContent === nameMovie) {
+                movie.classList.add('active');
+                return true;
+            } else {
+                movie.classList.remove('active');
+                return false;
+            }
+        };
+
+        // наименование отбора
+        title.innerHTML = `Movie character cards` +
+            (nameMovie === 'All' ? '' : `: <span class="title-movie">${nameMovie}</span>`);
+
+        // в списке фильмов выделяем отбор
+        movieList.querySelectorAll('li').forEach((movie) => {
+            toggleActive(movie);
+        });
+
+        // формируем отбор карточек
+        characters.querySelectorAll('.heroes').forEach((card) => {
+            let inFilter = nameMovie === 'All';
+            card.querySelectorAll('li').forEach((movie) => {
+                if (toggleActive(movie)) { inFilter = true; }
+            });
+            if (inFilter) {
+                card.classList.remove('close');
+            } else {
+                card.classList.add('close');
+            }
+        });
+    };
+
+    // плавный скролл на начало блока карточек   
+    const smoothScroll = (e) => {
+        e.preventDefault();
+
+        // счетчик прокрученных строк и целевое кол-во строк к прокрутке всё за 1 сек
+        const scrollY = window.scrollY;
+        // необходимо докрутить до начала элемента перехода
+        const transitionHeight = title.getBoundingClientRect().top;
+
+        //content.style.pointerEvents = "none";
+        animate({
+            duration: 1000,
+            timingplane: 'easeOutCubic',
+            draw(progress) {
+                if (progress === 0) { content.style.pointerEvents = "none"; }
+
+                // вертикальный скролл документа 
+                window.scrollTo(0, scrollY + transitionHeight * progress);
+
+                if (progress === 1) { content.style.pointerEvents = ""; }
+            }
+        });
+    };
+
     // подключить слушателей
     const addEvent = () => {
         // открытие / закрытие списка фильмов
@@ -161,41 +222,13 @@ const main = (pathData) => {
             if (e.target.matches('.movies li')) {
                 const nameMovie = e.target.textContent;
 
-                if (filterMovie === nameMovie) { return; }
-                filterMovie = nameMovie;
-
-                // переключатель выделения активности фильма
-                const toggleActive = (movie) => {
-                    if (movie.textContent === nameMovie) {
-                        movie.classList.add('active');
-                        return true;
-                    } else {
-                        movie.classList.remove('active');
-                        return false;
-                    }
-                };
-
-                // наименование отбора
-                title.innerHTML = `Movie character cards` +
-                    (nameMovie === 'All' ? '' : `: <span class="title-movie">${nameMovie}</span>`);
-
-                // в списке фильмов выделяем отбор
-                movieList.querySelectorAll('li').forEach((movie) => {
-                    toggleActive(movie);
-                });
-
-                // формируем отбор карточек
-                characters.querySelectorAll('.heroes').forEach((card) => {
-                    let inFilter = nameMovie === 'All';
-                    card.querySelectorAll('li').forEach((movie) => {
-                        if (toggleActive(movie)) { inFilter = true; }
-                    });
-                    if (inFilter) {
-                        card.classList.remove('close');
-                    } else {
-                        card.classList.add('close');
-                    }
-                });
+                if (filterMovie !== nameMovie) {
+                    filterMovie = nameMovie;
+                    // фильтрация карточек
+                    filtration(nameMovie);
+                }
+                // переход на блок карточек
+                smoothScroll(e);
             }
         });
     };
