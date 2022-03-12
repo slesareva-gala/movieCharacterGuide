@@ -20,26 +20,25 @@ const animate = ({ draw, duration = 1000, timingplane = 'linear' }) => {
     };
     if (!(timingplane in timing)) { timingplane = 'linear'; }
 
-    let start = performance.now(); // возвращает текущую точку времени старта анимации
+    // максимальное количество анимаций
+    const maxCountAnimation = Math.max(Math.round(duration / 16.7), 1);
+    // счетчик анимаций, максимальное количество анимаций
+    let countAnimation = 0;
 
-    requestAnimationFrame(function animate(time) {  // принимают текущий time stamp от requestAnimationFrame()
-        // timeFraction изменяется от 0 до 1
-        let timeFraction = (time - start) / duration; // теущий промежуток делим на продолжительность анимации
-        if (timeFraction > 1) { timeFraction = 1; }
-        else if (timeFraction < 0) { timeFraction = 0; }
-
+    requestAnimationFrame(function animation() {
         // вычисление текущего состояния анимации
-        // число от 0 до 1 с учетом указанной линейности, заданной в настроку timing 
-        // для линейно анимации -  возвращает то, что передали
-        let progress = timing[timingplane](timeFraction);
+        // число от 0 до 1 с учетом указанной линейности, заданной в настроку timing         
+        let progress = countAnimation === 0 ? 0 :
+            countAnimation > maxCountAnimation - 1 ? 1 :
+                timing[timingplane](countAnimation / maxCountAnimation);
+        draw(progress); // отрисовать 
 
-        draw(progress); // отрисовать её
-
-        if (timeFraction < 1) {    // повторит анимации
-            requestAnimationFrame(animate);
+        if (countAnimation < maxCountAnimation) {
+            countAnimation++;
+            requestAnimationFrame(animation);
         }
-
     });
+
 };
 
 export { animate };

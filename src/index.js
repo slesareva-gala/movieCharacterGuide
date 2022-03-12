@@ -2,7 +2,5 @@
 import main from './modules/main';
 
 
-// путь к файлу героев                      
-const pathData = './db/dbHeroes.json';
-
-main(pathData);
+// параметр: путьФайлаГероев, времяПереходаНаНачалоБлокаКарточекПриВыбореФильма
+main('./db/dbHeroes.json', 500);

@@ -2,7 +2,7 @@
 
 import { getData, animate } from './helpers';
 
-const main = (pathData) => {
+const main = (pathData, timing = 1000) => {
 
     // блок контента
     const content = document.querySelector('.content');
@@ -194,16 +194,17 @@ const main = (pathData) => {
         // необходимо докрутить до начала элемента перехода
         const transitionHeight = title.getBoundingClientRect().top;
 
-        //content.style.pointerEvents = "none";
         animate({
-            duration: 1000,
+            duration: timing,
             timingplane: 'easeOutCubic',
             draw(progress) {
+                // отключаем что-бы кнопочки не моргали при скролинге 
                 if (progress === 0) { content.style.pointerEvents = "none"; }
 
                 // вертикальный скролл документа 
                 window.scrollTo(0, scrollY + transitionHeight * progress);
 
+                // включаем кнопочки
                 if (progress === 1) { content.style.pointerEvents = ""; }
             }
         });
@@ -227,14 +228,14 @@ const main = (pathData) => {
                     // фильтрация карточек
                     filtration(nameMovie);
                 }
-                // переход на блок карточек
+
+                // переход на начало блока карточек                
                 smoothScroll(e);
             }
         });
     };
 
-    // после загрузки читаем файл героев и передаем его 
-    // на прорисовку
+    // после загрузки читаем файл героев и передаем его на прорисовку
     document.addEventListener("DOMContentLoaded", () => {
         getData(pathData)
             .then(data => {
