@@ -3,7 +3,7 @@
 import { getData, animate } from './helpers';
 
 const main = (pathData, timing = 1000) => {
-
+    console.log('main');
     // блок контента
     const content = document.querySelector('.content');
     // блок списка фильмов
